@@ -302,9 +302,9 @@
 
           /*---------------------------------------------*/
           .wrap-input100 {
-            position: relative;
+            /* position: relative; */
             width: 100%;
-            z-index: 1;
+            /* z-index: 1; */
             margin-bottom: 10px;
           }
 
@@ -564,11 +564,13 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                   <form:input path="username" class="input100 form-control form-control-user"
-                    cssErrorClass="form-control form-control-user is-invalid" id="exampleInputEmail"
+                    cssErrorClass="input100 form-control form-control-user " id="exampleInputEmail"
                     aria-describedby="emailHelp" placeholder="Nhập địa chỉ email..." />
+
                   <!-- <div class="invalid-feedback text-center">Vui lòng nhập
 												email!</div> -->
-                  <form:errors path="username" class="invalid-feedback text-center" element="div" />
+                  <form:errors path="username" class="invalid-feedback text-center mt-5" element="div"
+                    style="margin-top:10px;margin-left: 30px; color: #c80000;" />
 
                   <span class="focus-input100"></span>
                   <span class="symbol-input100">
@@ -578,9 +580,10 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Password is required">
                   <form:password path="password" class="input100 form-control form-control-user"
-                    cssErrorClass="form-control form-control-user is-invalid" id="exampleInputPassword"
+                    cssErrorClass="input100 form-control form-control-user is-invalid" id="exampleInputPassword"
                     placeholder="Nhập mật khẩu..." value="${userLogin.password}" />
-                  <form:errors path="password" cssClass="invalid-feedback text-center" element="div" />
+                  <form:errors path="password" cssClass="invalid-feedback text-center" element="div"
+                    style="margin-top:10px;margin-left: 30px; color: #c80000;" />
                   <span class="focus-input100"></span>
                   <span class="symbol-input100">
                     <i class="fa fa-lock" aria-hidden="true"></i>
@@ -593,18 +596,23 @@
                 </div>
 
                 <div class="container-login100-form-btn">
-                  <button type="submit" class="login100-form-btn">
+                  <button type="submit" class="login100-form-btn" style="background-color: #4158d0;">
                     Đăng nhập
                   </button>
-                  <a href="/oauth2/authorization/google" class="mt-5">
-                    Đăng nhập với Google
-                  </a>
+                  <button
+                    style="margin-top:20px;padding:10px;border-radius: 40px; border: solid 1px black;width: 300px;display: flex;justify-content: center;">
+                    <img src="/upload/search.png" alt="">
+                    <a href="/oauth2/authorization/google"
+                      style="text-decoration: none;margin-left: 10px;color:#333333;font-size: 16px;">
+                      Đăng nhập với Google
+                    </a></button>
+
                 </div>
 
 
                 <div class="text-center p-t-12" style="text-align: center;
     font-size: 24px;
-    margin-bottom: 148px;">
+    margin-bottom: 148px; margin-top: 20px;">
                   <span class="txt1">
                     Quên
                   </span>
