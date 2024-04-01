@@ -66,7 +66,7 @@ public class IndexC {
 		User loginedUser = (User) ((Authentication) principal).getPrincipal();
 
 		com.poly.main.Entity.User entity = dao.findByEmail(loginedUser.getUsername());
-
+		model.addAttribute("username", entity.getFullname());
 		sessionService.set("userLogin", entity);
 		int count = favoriteDao.countFavorite(entity.getId());
 		sessionService.set("countFavorite", count);

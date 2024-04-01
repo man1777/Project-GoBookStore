@@ -61,8 +61,6 @@ public class UserLoginC {
 		String fullname = oauth2.getPrincipal().getAttribute("name");
 		User user = dao.findByEmail(email);
 		if(user!=null) {
-			
-			
 			sessionService.set("userLogin", user);
 		}else {
 			User entity= new User();
@@ -72,19 +70,24 @@ public class UserLoginC {
 			entity.setDate(null);
 			sessionService.set("userLogin", entity);
 			dao.save(entity);
+			
 		}
 		return "redirect:/index";
 	}
 	
 	@PostMapping("/login")
-	public String login(Model model, @ModelAttribute("userLogin") @Validated UserLogin entity, BindingResult result) {
+	public String login(Model model, @ModelAttribute("userLogin") @Validated UserLogin entity, BindingResult result,@ModelAttribute String userName) {
 		if(result.hasErrors()) {
 			return "user/login";
 		}
+		
 		System.out.println("đã đăng nhập");
 		//System.out.println(entity.getUsername());
 		User user = dao.findByEmail(entity.getUsername());
+		userName = entity.getUsername();
 		System.out.println("data"+user.getUserRole());
+		System.out.println("userName"+userName);
+		model.addAttribute("username", userName);
 		sessionService.set("userLogin", user);
 		return "user/index";
 	}

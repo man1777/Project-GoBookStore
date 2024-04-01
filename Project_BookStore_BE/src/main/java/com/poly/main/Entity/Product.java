@@ -65,6 +65,19 @@ public class Product implements Serializable {
 		super();
 	}
 
+	public Product(String name, int price, String origin, String material, boolean status, String describe,
+			String review, String manuDay) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.origin = origin;
+		this.material = material;
+		this.status = status;
+		this.describe = describe;
+		this.review = review;
+		this.manuDay = manuDay;
+	}
+
 	public Product(String name, int price, String image, String origin, String material, boolean status,
 			String describe, String review, String manuDay) {
 		super();

@@ -12,6 +12,10 @@
                             <v-btn color="success" fab x-small outlined class="mb-2" @click="openDialog">
                                 <v-icon>mdi-plus</v-icon>
                             </v-btn>
+                            <v-icon color="success" @click="exportToExcel()">mdi-excel</v-icon>
+                            <v-btn class="me-5" @click="exportToExcel()"><img class="me-3" width="32" height="32"
+                                    src="https://img.icons8.com/color/32/ms-excel.png" alt="ms-excel" />Xuất
+                                Excel</v-btn>
                         </template>
                         <v-card>
                             <v-card-title>
@@ -22,7 +26,7 @@
                                 </v-btn>
                             </v-card-title>
                             <v-card-text class="mt-5">
-                                <v-form>
+                                <v-form ref="form" v-model="valid" lazy-validation>
                                     <v-row>
                                         <v-col cols="6">
                                             <v-card style="max-height:500px">
@@ -32,7 +36,7 @@
                                                         max-height="300" max-width="100%"></v-img>
                                                     <v-img
                                                         src="https://th.bing.com/th/id/OIP.w8YMeMXz_tZ3LUh06MB5UQHaHa?rs=1&pid=ImgDetMain"
-                                                        v-else-if="imagePreviewUrl === null"></v-img>
+                                                        v-else-if="imagePreviewUrl === ''"></v-img>
                                                     <v-img v-if="imagePreviewUrl" :src="imagePreviewUrl" alt="Preview"
                                                         max-height="300" max-width="100%"></v-img>
                                                 </label>
@@ -43,25 +47,28 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-row>
-                                                <v-col cols="12">
+                                                <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Tên sách" outlined dense
-                                                        v-model="Product_Obj.name" hide-details></v-text-field>
+                                                        v-model="Product_Obj.name" :rules="nameRules"
+                                                        counter="50"></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12">
+                                                <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Nhà xuất bản" v-model="Product_Obj.origin"
-                                                        outlined dense hide-details></v-text-field>
+                                                        outlined dense :rules="originRules" counter="50"></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12">
+                                                <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Ngày xuất bản" v-model="Product_Obj.manuDay"
-                                                        outlined dense hide-details></v-text-field>
+                                                        outlined dense :rules="manuDayRules"
+                                                        hint="VD: 17/07/2003"></v-text-field>
                                                 </v-col>
-                                                <v-col cols="6">
-                                                    <v-text-field label="Giá sách" v-model="Product_Obj.price" outlined
-                                                        dense hide-details></v-text-field>
+                                                <v-col cols="6" style="height: 70px;">
+                                                    <v-text-field label="Giá sách" :rules="priceRules"
+                                                        v-model="Product_Obj.price" outlined dense></v-text-field>
                                                 </v-col>
-                                                <v-col cols="6">
-                                                    <v-text-field label="Loại bìa" v-model="Product_Obj.material"
-                                                        outlined dense hide-details></v-text-field>
+                                                <v-col cols="6" style="height: 70px;">
+                                                    <v-select label="Loại bìa" :items="['Bìa cứng', 'Bìa mềm', 'Khác']"
+                                                        v-model="Product_Obj.material" outlined dense
+                                                        :rules="[v => !!v || 'Vui lòng chọn loại bìa']"></v-select>
                                                 </v-col>
                                                 <v-col cols="12">
                                                     <v-checkbox :label="Product_Obj.status ? 'Còn hàng' : 'Hết hàng'"
@@ -138,13 +145,15 @@
 </template>
 
 <script>
+import ExcelJS from 'exceljs'
 export default {
     data() {
         return {
+            valid: false,
             dialog: false,
             dialogConfirmDelete: false,
-            imagePreviewUrl: null,
-            imageTemp: null,
+            imagePreviewUrl: '',
+            imageTemp: "",
             headers: [
                 { text: "STT", value: "stt", align: "center", sortable: false },
                 { text: "Tên sách", value: "name" }, { text: "Nhà xuất bản", value: "origin" },
@@ -165,9 +174,9 @@ export default {
                 origin: "",
                 material: "",
                 describe: "",
-                status: null,
+                status: false,
                 review: "",
-                manuDay: "2014-05-17"
+                manuDay: ""
 
             },
             Product_Obj_Default: {
@@ -179,11 +188,27 @@ export default {
                 material: "",
                 describe: "",
                 review: "",
-                manuDay: "2014-05-17",
-                status: null
+                manuDay: "",
+                status: false
 
             },
-            imageFile: null
+            imageFile: "",
+            nameRules: [
+                v => !!v || "Vui lòng nhập tên sản phẩm",
+                v => (v && v.length < 50) || "Tên sản phẩm nhập tối đa 50 ký tự"
+            ],
+            originRules: [
+                v => !!v || "Vui lòng nhập nhà xuất bản",
+                v => (v && v.length < 50) || "Nhà xuất bản tối đa 50 ký tự"
+            ],
+            manuDayRules: [
+                v => !!v || "Vui lòng nhập ngày xuất bản",
+                v => /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(v) || 'Ngày không hợp lệ (dd/MM/yyyy)',
+            ],
+            priceRules: [
+                v => !!v || "Vui lòng nhập giá bán",
+                v => /^\d+$/.test(v) || "Giá bán không hợp lệ"
+            ],
         }
     },
     watch: {
@@ -212,6 +237,7 @@ export default {
             console.log("item", item)
             this.editedIndex = this.ProductsList.indexOf(item)
             console.log("this.editedIndex", this.editedIndex)
+            this.Product_Obj.manuDay = this.formatDate(this.Product_Obj.manuDay)
         },
         openDialog() {
             this.dialog = true
@@ -220,7 +246,8 @@ export default {
             this.dialog = false
             this.Product_Obj = Object.assign({}, this.Product_Obj_Default)
             this.editedIndex = -1
-            this.imagePreviewUrl = null
+            this.imagePreviewUrl = ''
+            this.$refs.form.reset()
         },
         closeDialogDelete() {
             this.dialogConfirmDelete = false
@@ -236,15 +263,20 @@ export default {
             })
         },
         save() {
+            if (this.$refs.form.validate() === false) {
+                return
+            }
             this.Product_Obj.image = this.imageTemp
+            this.Product_Obj.manuDay = this.formatSql(this.Product_Obj.manuDay)
+
             if (this.editedIndex === -1) {
                 this.insertProduct();
             } else {
-                this.insertProduct();
+                this.updateProduct();
             }
         },
         processImage(event) {
-            this.Product_Obj.image = null
+            this.Product_Obj.image = ''
             const file = event.target.files[0];
             this.imageTemp = file
             const reader = new FileReader();
@@ -253,28 +285,6 @@ export default {
             };
             reader.readAsDataURL(file);
 
-        },
-        image() {
-            let formData = new FormData();
-            formData.append('name', this.Product_Obj.name)
-            formData.append('price', this.Product_Obj.price)
-            formData.append('image', this.Product_Obj.image)
-            formData.append('origin', this.Product_Obj.origin)
-            formData.append('material', this.Product_Obj.material)
-            formData.append('manuday', this.Product_Obj.manuDay)
-            formData.append('describe', this.Product_Obj.describe)
-            formData.append('review', this.Product_Obj.review)
-            formData.append('status', this.Product_Obj.status)
-            axios.post("http://localhost:8080/rest/getImage", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            )
-                .then(res => {
-
-                })
-                .catch(err => console.log(err))
         },
         insertProduct() {
             let formData = new FormData();
@@ -301,10 +311,93 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
+        updateProduct() {
+            let formData = new FormData();
+            formData.append('name', this.Product_Obj.name)
+            formData.append('price', this.Product_Obj.price)
+            formData.append('image', this.Product_Obj?.image)
+            formData.append('origin', this.Product_Obj.origin)
+            formData.append('material', this.Product_Obj.material)
+            formData.append('manuday', this.Product_Obj.manuDay)
+            formData.append('describe', this.Product_Obj.describe)
+            formData.append('review', this.Product_Obj.review)
+            formData.append('status', this.Product_Obj.status)
+            formData.append('id', this.Product_Obj.id)
+            console.log("this.Product_Obj.image", this.Product_Obj.image)
+            axios.post("http://localhost:8080/rest/updateProduct", formData)
+                .then(res => {
+                    this.closeDialog()
+                    this.renderDataTable()
+                    console.log("thànhc ông", res.data)
+                })
+                .catch(err => console.log(err))
+        },
         formatDate(date) {
             const parts = date.split('-');
             return `${parts[2]}/${parts[1]}/${parts[0]}`;
         },
+        formatSql(date) {
+            const parts = date.split('/');
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        },
+        async exportToExcel() {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Data');
+
+            // Thêm tiêu đề từ headers vào worksheet
+            let headerRow = []
+            this.headers.forEach(header => {
+                headerRow.push({ name: header.text });
+            });
+            let title = this.headers.map(header => header.text)
+            worksheet.addRow(title);
+
+            //Thêm dữ liệu từ ProductsList vào worksheet
+            this.ProductsList.forEach((item, index) => {
+                const rowData = [];
+                item.stt = index + 1
+                if (item.status) {
+                    item.status = "Còn hàng"
+                } else {
+                    item.status = "Hết hàng"
+                }
+                this.headers.forEach(header => {
+
+                    rowData.push(item[header.value]);
+                });
+                worksheet.addRow(rowData);
+            });
+            // worksheet.addTable({
+            //     name: 'Data',
+            //     ref: 'A1', // Reference to the top-left cell of the table
+            //     headerRow: true, // Include header row
+            //     totalsRow: false, // Include totals row (if needed)
+            //     style: {
+            //         theme: 'TableStyleMedium9', // Choose a table style
+            //         showRowStripes: true, // Show row stripes
+            //     },
+            //     rows: this.ProductsList.length + 2,
+
+            //     columns: headerRow,
+            // });
+
+            // Tạo file Excel và tải xuống
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const fileName = 'QuanLySanPham.xlsx';
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, fileName);
+            } else {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        }
     },
     mounted() {
         this.renderDataTable();

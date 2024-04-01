@@ -36,6 +36,16 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 	List<Product> fillBonusProduct(int number);
 	@Query("select count(p) from Product p ")
 	Integer getSanPham();
+	@Query("UPDATE Product o SET o.name = :name,"
+			+ "o.price=:price"
+			+ ",o.origin=:origin,"
+			+ "o.material =:material,"
+			+ "o.status =:status,"
+			+ "describe=:describe,"
+			+ "review=:review,"
+			+ "manuDay=:dateStr "
+			+ "WHERE o.id = :id")
+	void updateProduct(@Param("id") int  id,@Param("name") String name, @Param("price")int price, @Param("origin") String origin, @Param("material") String material,@Param("status") boolean status,@Param("describe") String describe,@Param("review") String review, @Param("dateStr")String dateStr);
 	
 	
 	
