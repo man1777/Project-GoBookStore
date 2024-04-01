@@ -1,12 +1,15 @@
 package com.poly.main.Controller.Users;
 
+import java.security.Principal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -53,11 +56,13 @@ public class UserLoginC {
 		return "user/login";
 	}
 	@RequestMapping("/oauth2/success")
-	public String success(OAuth2AuthenticationToken oauth2) {
+	public String success(OAuth2AuthenticationToken oauth2,Model model) {
 		String email = oauth2.getPrincipal().getAttribute("email");
 		String fullname = oauth2.getPrincipal().getAttribute("name");
 		User user = dao.findByEmail(email);
 		if(user!=null) {
+			
+			
 			sessionService.set("userLogin", user);
 		}else {
 			User entity= new User();
@@ -79,6 +84,7 @@ public class UserLoginC {
 		System.out.println("đã đăng nhập");
 		//System.out.println(entity.getUsername());
 		User user = dao.findByEmail(entity.getUsername());
+		System.out.println("data"+user.getUserRole());
 		sessionService.set("userLogin", user);
 		return "user/index";
 	}

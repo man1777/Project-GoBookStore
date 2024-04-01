@@ -95,6 +95,10 @@ public class AddressC {
 		
 		address = dao.getAddress(user.getId());
 		AddressModel entity = new AddressModel();
+		if(address==null) {
+			System.out.println("Null");
+			
+		}
 	
 		if (address != null) {
 			entity.setFirstname(address.getFirstname());
@@ -108,7 +112,7 @@ public class AddressC {
 	 
 			
 			String vnp_Version = "2.1.0";
-String vnp_Command = "pay";
+			String vnp_Command = "pay";
 	        String orderType = "other";
 	        long amount = (tolal()*100)+3000000;
 	        System.out.println(tolal());
@@ -189,6 +193,10 @@ model.addAttribute("url", paymentUrl);
 				address.setLastname("");
 				address.setPhone("0934564821");
 				address.setProvincial("HCM");
+		    }
+		    if(entity.getAddress()==null&& entity.getEmail()==null&&entity.getFirstname()==null&& entity.getLastname()==null&&entity.getPhone()==null&& entity.getProvincial()==null) {
+		    	
+		    	return "user/checkout";
 		    }
 		
 			address.setAddress(entity.getAddress());

@@ -19,28 +19,30 @@
                             </v-btn>
                         </v-card-title>
                         <v-card-text>
-                            <v-form>
+                            <v-form ref="Validform" v-model="valid" lazy-validation>
                                 <v-row>
-                                    <v-col cols="4">
+                                    <v-col cols="4" style="height: 70px;">
                                         <v-select :items="UserIdList" v-model="Employee_Obj.user.id" item-text="id"
                                             item-value="id" label="Mã nhân viên" @change="autoFill" outlined dense
-                                            hide-details :readonly="editedIndex !== -1"></v-select>
+                                            :readonly="editedIndex !== -1"
+                                            :rules="[v => !!v || 'Vui lòng chọn mã nhân viên']" required></v-select>
                                     </v-col>
                                     <v-col cols="4">
                                         <v-text-field label="Họ và tên" v-model="Employee_Obj.user.fullname" readonly
-                                            outlined dense hide-details></v-text-field>
+                                            outlined dense hide-details required></v-text-field>
                                     </v-col>
                                     <v-col cols="4">
                                         <v-text-field label="Email" v-model="Employee_Obj.user.email" readonly outlined
-                                            dense hide-details></v-text-field>
+                                            dense hide-details required></v-text-field>
                                     </v-col>
                                     <v-col cols="4">
                                         <v-select label="Vị trí" :items="ViTri" v-model="Employee_Obj.position" outlined
-                                            dense hide-details></v-select>
+                                            dense :rules="[v => !!v || 'Vui lòng chọn vị trí làm việc']"
+                                            required></v-select>
                                     </v-col>
                                     <v-col cols="4">
-                                        <v-text-field label="Ngày vào làm" v-model="Employee_Obj.startDay" outlined
-                                            dense hide-details></v-text-field>
+                                        <v-text-field label="Ngày vào làm" :rules="DayBeginRules"
+                                            v-model="Employee_Obj.startDay" outlined dense required></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-form>
@@ -101,9 +103,10 @@ export default {
     data() {
         return {
             dialog: false,
+            valid: false,
             dialogConfirmDelete: false,
             headers: [
-                { text: "Mã nhân viên", value: "manhanvien" },
+                { text: "Mã nhân viên", value: "manhanvien", align: "center", sortable: false },
                 { text: "Họ và tên", value: "fullname" },
                 { text: "Vị trí", value: "position" },
                 { text: "Email", value: "email" },
@@ -132,8 +135,13 @@ export default {
                 startDay: null
             },
             editedIndex: -1,
-
+            DayBeginRules: [
+                v => !!v || "Bắt buộc",
+                v => /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(v) || 'Ngày không hợp lệ (dd/MM/yyyy)',
+            ]
         }
+    },
+    created() {
     },
     watch: {
         dialog: function (val) {
@@ -144,16 +152,25 @@ export default {
         }
     },
     methods: {
+        formatDataToSql(date) {
+            let format = date?.split('/')
+            return `${format[2]}-${format[1]}-${format[0]}`
+        },
+        formatSqlToDate(date) {
+            let format = date?.split('-')
+            return `${format[2]}/${format[1]}/${format[0]}`
+        },
         delete_emp(item) {
             this.Employee_Obj = Object.assign({}, item)
             this.dialogConfirmDelete = true
         },
-        edit_emp(item) {
+        async edit_emp(item) {
+
             this.dialog = true
             this.Employee_Obj = Object.assign({}, item)
+            this.Employee_Obj.startDay = await this.formatSqlToDate(this.Employee_Obj.startDay)
             this.Employee_Obj.user = Object.assign({}, item.user)
             this.editedIndex = this.UserList.indexOf(item)
-            console.log("item", item.id)
         },
         openDialog() {
             this.dialog = true
@@ -163,6 +180,7 @@ export default {
             this.Employee_Obj = Object.assign({}, this.Employee_Obj_Default)
             this.Employee_Obj.user = Object.assign({}, this.Employee_Obj_Default.user)
             this.editedIndex = -1
+            this.$refs?.Validform?.reset()
         },
         closeDialogDelete() {
             this.dialogConfirmDelete = false
@@ -184,7 +202,6 @@ export default {
                 .then(response => {
                     this.UserList = response.data
                 }
-
                 )
         },
         renderUserId() {
@@ -197,6 +214,11 @@ export default {
                 )
         },
         save() {
+
+            if (this.$refs.Validform.validate() === false) {
+                return
+            }
+            this.Employee_Obj.startDay = this.formatDataToSql(this.Employee_Obj.startDay)
             if (this.editedIndex === -1) {
                 this.insertEmployee();
             } else {
@@ -209,7 +231,6 @@ export default {
         },
         insertEmployee() {
             let exist = this.UserList.some(item => item.user.id === this.Employee_Obj.user.id);
-            console.log("exist", exist)
             if (exist === true) {
                 return alert("Trùng mã nhân viên")
             }
@@ -232,6 +253,7 @@ export default {
     mounted() {
         this.renderDataTable()
         this.renderUserId()
+
     }
 }
 </script>

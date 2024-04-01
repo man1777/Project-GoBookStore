@@ -177,9 +177,9 @@
 									<div class="bg-white p-34">
 									</div>
 									<a href="${url}">
-										<button style="    margin-left: 8px;
+										<button style="margin-left: 8px;
     height: 53.6px;
-    width: 385px;
+    width: 486px;
     background-color: #5151ee;
     outline: none;
     border: 0;" class="btn btn-block btn-warning text-white font-weight-bold py-3 px-2">Thanh toán chuyển
