@@ -170,7 +170,7 @@
 								</div>
 							</div>
 						</form:form>
-						<div class="row">
+						<div class="row" style="margin-top:30px">
 							<div class="col-8"></div>
 							<div class="col-4">
 								<div class="mb-2">

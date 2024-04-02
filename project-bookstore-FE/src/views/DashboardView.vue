@@ -214,8 +214,11 @@
             </v-col>
             <v-col cols="6">
                 <v-card>
-                    <v-card-title class="primary--text">Doanh thu từng tháng theo năm <v-spacer></v-spacer> <v-select
-                            :items="yearItem" label="Năm" v-model="Nam" style="max-width:150px" dense hide-details
+                    <v-card-title class="primary--text">Doanh thu từng tháng theo năm <v-spacer></v-spacer>
+                        <v-btn class="mx-3" fab small @click="excel"><img width="35" height="35"
+                                src="https://img.icons8.com/color/35/microsoft-excel-2019--v1.png"
+                                alt="microsoft-excel-2019--v1" /></v-btn>
+                        <v-select :items="yearItem" label="Năm" v-model="Nam" style="max-width:150px" dense hide-details
                             outlined></v-select>
                     </v-card-title>
                     <v-card-text>
@@ -555,6 +558,9 @@ export default {
                 console.log(err)
             })
         },
+        excel() {
+
+        }
 
     }
 }

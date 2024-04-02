@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="ProductsList" class="elevation-1">
+        <v-data-table :headers="headers" :items="ProductsList" class="elevation-1" items-per-page="15">
 
             <template v-slot:top>
                 <v-toolbar flat>
@@ -49,26 +49,29 @@
                                             <v-row>
                                                 <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Tên sách" outlined dense
-                                                        v-model="Product_Obj.name" :rules="nameRules"
-                                                        counter="50"></v-text-field>
+                                                        v-model="Product_Obj.name" :rules="nameRules" counter="200"
+                                                        lazy-validation="true"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Nhà xuất bản" v-model="Product_Obj.origin"
-                                                        outlined dense :rules="originRules" counter="50"></v-text-field>
+                                                        outlined dense lazy-validation="true" :rules="originRules"
+                                                        counter="50"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" style="height: 70px;">
                                                     <v-text-field label="Ngày xuất bản" v-model="Product_Obj.manuDay"
-                                                        outlined dense :rules="manuDayRules"
-                                                        hint="VD: 17/07/2003"></v-text-field>
+                                                        outlined dense :rules="manuDayRules" hint="VD: 17/07/2003"
+                                                        lazy-validation="true"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="6" style="height: 70px;">
                                                     <v-text-field label="Giá sách" :rules="priceRules"
-                                                        v-model="Product_Obj.price" outlined dense></v-text-field>
+                                                        v-model="Product_Obj.price" outlined dense
+                                                        lazy-validation="true"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="6" style="height: 70px;">
                                                     <v-select label="Loại bìa" :items="['Bìa cứng', 'Bìa mềm', 'Khác']"
                                                         v-model="Product_Obj.material" outlined dense
-                                                        :rules="[v => !!v || 'Vui lòng chọn loại bìa']"></v-select>
+                                                        :rules="[v => !!v || 'Vui lòng chọn loại bìa']"
+                                                        lazy-validation="true"></v-select>
                                                 </v-col>
                                                 <v-col cols="12">
                                                     <v-checkbox :label="Product_Obj.status ? 'Còn hàng' : 'Hết hàng'"
@@ -78,8 +81,7 @@
                                             </v-row>
                                         </v-col>
                                         <v-col cols="12">
-                                            <v-textarea clearable clear-icon="mdi-close-circle"
-                                                v-model="Product_Obj.describe" label="Mô tả sách" outlined dense
+                                            <v-textarea v-model="Product_Obj.describe" label="Mô tả sách" outlined dense
                                                 hide-details></v-textarea>
                                         </v-col>
                                     </v-row>
@@ -121,12 +123,14 @@
             <template v-slot:item.stt="{ item }">
                 <span>{{ ProductsList.indexOf(item) + 1 }}</span>
             </template>
-
+            <template v-slot:item.image="{ item }">
+                <v-img :src="'http://localhost:8080/upload/' + item.image" width="100px"></v-img>
+            </template>
             <template v-slot:item.manuDay="{ item }">
                 <span>{{ formatDate(item.manuDay) }}</span>
             </template>
 
-            <template v-slot:item.price="{ item }">
+            <template v-slot:item.price="{ item }" class="p-5">
                 <span>{{ (item.price).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }} VNĐ</span>
             </template>
 
@@ -156,6 +160,7 @@ export default {
             imageTemp: "",
             headers: [
                 { text: "STT", value: "stt", align: "center", sortable: false },
+                { text: "Hình ảnh", value: "image", align: "center" },
                 { text: "Tên sách", value: "name" }, { text: "Nhà xuất bản", value: "origin" },
                 { text: "Giá tiền", value: "price", align: "center", width: "120" },
                 { text: "Ngày xuất bản", value: "manuDay" },
@@ -195,7 +200,7 @@ export default {
             imageFile: "",
             nameRules: [
                 v => !!v || "Vui lòng nhập tên sản phẩm",
-                v => (v && v.length < 50) || "Tên sản phẩm nhập tối đa 50 ký tự"
+                v => (v && v.length < 200) || "Tên sản phẩm nhập tối đa 200 ký tự"
             ],
             originRules: [
                 v => !!v || "Vui lòng nhập nhà xuất bản",
@@ -248,6 +253,7 @@ export default {
             this.editedIndex = -1
             this.imagePreviewUrl = ''
             this.$refs.form.reset()
+            this.imageTemp = ''
         },
         closeDialogDelete() {
             this.dialogConfirmDelete = false
@@ -362,10 +368,10 @@ export default {
                     item.status = "Hết hàng"
                 }
                 this.headers.forEach(header => {
-
                     rowData.push(item[header.value]);
                 });
                 worksheet.addRow(rowData);
+                this.renderDataTable()
             });
             // worksheet.addTable({
             //     name: 'Data',
