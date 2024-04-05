@@ -243,6 +243,7 @@
 </template>
 
 <script>
+import ExcelJS from 'exceljs'
 import { BarChart, barChartCDN, lineChart } from '../components'
 export default {
     components: {
@@ -333,7 +334,9 @@ export default {
             ThangData: [],
             yearItem: ["2020", "2021", "2022", "2023", '2024'],
             DataLineChart: [],
-            OrdersToday: []
+            OrdersToday: [],
+            ExcelData: [],
+            ExcelDataValue: []
         }
     },
     computed: {
@@ -429,7 +432,6 @@ export default {
             })
         },
         API_getDoanhThuTheoNgay() {
-            // console.log("this.day", this.formatDateInput(this.day))
             axios.post("http://localhost:8080/rest/getDoanhThuTheoNgay", {
 
                 day: this.formatDateInput(this.day)
@@ -440,7 +442,6 @@ export default {
             })
         },
         API_getDoanhThuTheoNam() {
-            // console.log("this.day", this.formatDateInput(this.day))
             axios.post("http://localhost:8080/rest/getDoanhThuTheoNam", {
             }).then(res => {
                 let DataLineChart = res.data
@@ -452,8 +453,6 @@ export default {
 
                 let linechart = this.$refs?.linechart?.myChart
                 if (linechart) line.update()
-                console.log("year", year)
-                console.log("dataArr", dataArr)
                 this.loaded = true
             }).catch(err => {
                 console.log(err)
@@ -506,12 +505,17 @@ export default {
                     return item.revenue
                 })
                 this.data = data
+                this.ExcelData = monthArr
+                this.ExcelDataValue = result.map((item) => {
+                    return item.revenue
+                })
                 let chartbar = this.$refs?.chartbarcdn?.myChart
                 if (chartbar) chartbar.update()
                 this.loaded = true
             }).catch(err => {
                 console.log(err)
             })
+
         },
         API_getDonHangToDay() {
             axios.post("http://localhost:8080/rest/getDonHangToDay", {
@@ -558,7 +562,29 @@ export default {
                 console.log(err)
             })
         },
-        excel() {
+        async excel() {
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Doanh thu theo năm');
+            worksheet.addRow(["Doanh thu năm: ", this.Nam]);
+            worksheet.addRow(this.ExcelData);
+            worksheet.addRow(this.ExcelDataValue);
+            // Tạo file Excel và tải xuống
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const fileName = 'QuanLySanPham.xlsx';
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, fileName);
+            } else {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
 
         }
 
