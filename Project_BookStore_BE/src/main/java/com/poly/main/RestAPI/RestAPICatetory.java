@@ -21,8 +21,12 @@ public List<Category> getCatetory(){
 	return dao.getCate();
 }
 @RequestMapping("/manager/getproduct")
-public List<ProductCate> getProduct(@RequestParam int id){
-	System.out.println("id" + id);
-	return dao.getProducts(id);
+public List<ProductCate> getProduct(@RequestParam(required = false) int id){
+	if(id != 0 ) {
+		System.out.println("id" + id);
+		return dao.getProducts(id);
+	}
+	System.out.println("id null " + id);
+	return dao.getAllProducts();
 }
 }

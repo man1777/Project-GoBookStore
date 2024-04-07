@@ -190,8 +190,6 @@
 												<div class="row">
 													<div class="col-md-6">
 														<ul class="list-group list-group-flush">
-															<li class="list-group-item px-0">Thương hiệu:
-																${loadInfo.manufacture.name}</li>
 															<li class="list-group-item px-0">Chất liệu:
 																${loadInfo.material}</li>
 															<li class="list-group-item px-0"></li>

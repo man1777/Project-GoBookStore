@@ -24,5 +24,10 @@ public class CatetoryServiceImpl implements CatetoryService {
 		// TODO Auto-generated method stub
 		return daoCate.getProductByCateID(id);
 	}
+	@Override
+	public List<ProductCate> getAllProducts() {
+		// TODO Auto-generated method stub
+		return daoCate.findAll();
+	}
 
 }

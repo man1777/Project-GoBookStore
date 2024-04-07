@@ -8,5 +8,6 @@ import com.poly.main.Entity.ProductCate;
 public interface CatetoryService {
 	List<Category> getCate();
 	List<ProductCate> getProducts(int id);
+	List<ProductCate> getAllProducts();
 
 }
