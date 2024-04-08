@@ -87,8 +87,10 @@
 
         <template v-slot:item.email="{ item }">
             <p>{{ item.user.email }}</p>
+        </template>formatSqlToDate
+        <template v-slot:item.startDay="{ item }">
+            <p>{{ formatSqlToDate(item.startDay) }}</p>
         </template>
-
         <template v-slot:item.manhanvien="{ item }">
             <p>{{ item.user.id }}</p>
         </template>
