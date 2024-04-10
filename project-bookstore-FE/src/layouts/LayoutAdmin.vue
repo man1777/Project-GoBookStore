@@ -40,13 +40,15 @@
                 </v-list-group>
             </v-list>
         </v-navigation-drawer>
-        <v-app-bar app height="85" class="elevation-0" color="#FFFFFF">
+        <v-app-bar app height="85" class="elevation-0 appbar" color="#FFFFFF">
 
-            <span class="font-weight-medium text-h4">{{ Title }}</span>
+            <span class="font-weight-medium text-h4 me-15" >{{ Title }}</span>
+            <v-text-field class="me-5" prepend-icon="mdi-magnify" label="Tìm kiếm" dense hide-details
+                style="max-width:500px"></v-text-field>
             <v-spacer></v-spacer>
             <div>
                 <v-icon color="primary">mdi-account-circle </v-icon>
-                Trần Ngọc Mẫn
+                <span>Trần Ngọc Mẫn</span>
             </div>
         </v-app-bar>
         <v-main>
@@ -88,8 +90,8 @@ export default {
                 },
                 {
                     action: 'mdi-account-group',
-                    items: [{ title: 'Danh sách người dùng' }],
-                    title: 'Người dùng',
+                    items: [{ title: 'Quản lý lịch làm việc', url: "/manager/plantwork" }],
+                    title: 'Lịch làm việc',
                 },
                 {
                     action: 'mdi-cart-variant',
@@ -123,6 +125,8 @@ export default {
 </script>
 
 <style scoped>
+.appbar {}
+
 .nav-drawer {
     max-width: 100%;
 }

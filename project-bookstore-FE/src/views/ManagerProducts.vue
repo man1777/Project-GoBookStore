@@ -1,6 +1,7 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="ProductsList" class="elevation-1" items-per-page="15">
+        <v-data-table :headers="headers" :items="ProductsList" class="elevation-1"
+            :footer-props="{ 'items-per-page-options': [10, 15, 20, -1] }">
 
             <template v-slot:top>
                 <v-toolbar flat>

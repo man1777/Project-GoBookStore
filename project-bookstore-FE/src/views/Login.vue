@@ -11,10 +11,10 @@
                                         <h3 class="text-center">ĐĂNG NHẬP</h3>
                                         <v-row align="center" justify="center">
                                             <v-col cols="12" sm="8">
-                                                <v-text-field label="Email" outlined dense color="blue" autocomplete="false"
-                                                    class="mt-16"></v-text-field>
-                                                <v-text-field label="Password" type="password" outlined dense color="blue"
-                                                    autocomplete="false"></v-text-field>
+                                                <v-text-field label="Email" outlined dense color="blue"
+                                                    autocomplete="false" class="mt-16"></v-text-field>
+                                                <v-text-field label="Password" type="password" outlined dense
+                                                    color="blue" autocomplete="false"></v-text-field>
                                                 <v-row>
                                                     <v-col cols="12" sm="7">
                                                         <v-checkbox label="Lưu đăng nhập" class="mt-n1"

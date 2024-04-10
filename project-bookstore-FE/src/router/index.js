@@ -66,6 +66,11 @@ const routes = [
     name: 'ordersback',
     component: () => import(/* webpackChunkName: "about" */ '../views/OrdersBack.vue'),
   },
+  {
+    path: '/manager/plantwork',
+    name: 'plantwork',
+    component: () => import(/* webpackChunkName: "about" */ '../views/PlanWorkView.vue'),
+  },
 ]
 
 const router = new VueRouter({

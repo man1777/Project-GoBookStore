@@ -22,7 +22,7 @@ export default {
     isShow: function () {
       const subUrl = ["/manager", "/manager/employee",
         "/manager/login", "/manager/products", "/manager/dashboard",
-        "/manager/orderswaiting", "/manager/ordersshiped", "/manager/catetoryproduct", "/manager/orderssuccess", "/manager/ordersback"]
+        "/manager/orderswaiting", "/manager/ordersshiped", "/manager/catetoryproduct", "/manager/orderssuccess", "/manager/ordersback", "/manager/plantwork"]
       return subUrl.indexOf(this.$route.path) >= 0;
     }
   }
