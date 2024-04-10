@@ -16,10 +16,10 @@
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;"
                                         v-if="DoanhThuToday"><span>{{
                                             DoanhThuToday.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-                                        }}</span> VND</span>
-                                    <span style="margin-top: 30px; font-size: 24px;font-weight: 600;" v-else><span>{{
-                                                0
                                             }}</span> VND</span>
+                                    <span style="margin-top: 30px; font-size: 24px;font-weight: 600;" v-else><span>{{
+                                        0
+                                    }}</span> VND</span>
                                     <span style="margin-top: 5px; font-size: 20px;">Doanh thu</span>
                                 </div>
                             </v-col>
@@ -29,7 +29,7 @@
                                         <v-icon style="font-size:35px;color:#FFFFFF">mdi-account-group</v-icon>
                                     </div>
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;">{{
-                                                UserToday ? UserToday : 0 }}
+                                        UserToday ? UserToday : 0 }}
                                     </span>
                                     <span style="margin-top: 5px; font-size: 20px;">Người dùng mới</span>
                                 </div>
@@ -41,7 +41,7 @@
                                         <v-icon style="font-size:35px;color:#FFFFFF">mdi-bookshelf</v-icon>
                                     </div>
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;"> {{
-                                            SLSPToDay ? SLSPToDay : 0 }}
+                                        SLSPToDay ? SLSPToDay : 0 }}
                                     </span>
                                     <span style="margin-top: 5px; font-size: 20px;">Số lượng sản phẩm đã bán</span>
                                 </div>
@@ -84,7 +84,7 @@
                         </template>
                         <template v-slot:item.tien="{ item }">
                             <v-chip color="success"><span> {{ item.money.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                            "$1,") }} VNĐ </span></v-chip>
+                                "$1,") }} VNĐ </span></v-chip>
                         </template>
                     </v-data-table>
                 </div>
@@ -125,7 +125,7 @@
                         </template>
                         <template v-slot:item.tien="{ item }">
                             <v-chip color="success"><span>{{ (item.tien).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                            "$1,") }} VNĐ </span></v-chip>
+                                "$1,") }} VNĐ </span></v-chip>
                         </template>
                     </v-data-table>
                 </div>
@@ -136,7 +136,7 @@
                         <v-icon style="font-size:35px;color:#FFFFFF">mdi-cash</v-icon>
                     </div>
                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;"><span v-if="DoanhThu">{{
-                                            DoanhThu.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }}</span> VND</span>
+                        DoanhThu.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }}</span> VND</span>
                     <span style="margin-top: 5px; font-size: 20px;">Tổng doanh thu</span>
                 </div>
             </v-col>
@@ -182,7 +182,7 @@
                         </template>
                         <template v-slot:item.tien="{ item }">
                             <v-chip color="success"><span>{{ (item.tien).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                            "$1,") }} VNĐ </span></v-chip>
+                                "$1,") }} VNĐ </span></v-chip>
                         </template>
                         <template v-slot:item.date="{ item }">
                             <span>{{ formatDate(item.date) }} </span>
@@ -201,8 +201,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>{{ p.name }}</v-list-item-title>
                                 <v-list-item-subtitle><span>Giá bán: {{
-                                            (p.price).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-                                                "$1,") }} VNĐ</span></v-list-item-subtitle>
+                                    (p.price).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
+                                        "$1,") }} VNĐ</span></v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action class="d-flex flex-row justify-center align-center">
                                 <v-chip color="orange"><span style="color:#FFFFFF;font-weight: 600;">{{ p.countOrder
@@ -572,7 +572,7 @@ export default {
             // Tạo file Excel và tải xuống
             const buffer = await workbook.xlsx.writeBuffer();
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const fileName = 'QuanLySanPham.xlsx';
+            const fileName = 'DoanhThuTungNam.xlsx';
             if (window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveBlob(blob, fileName);
             } else {

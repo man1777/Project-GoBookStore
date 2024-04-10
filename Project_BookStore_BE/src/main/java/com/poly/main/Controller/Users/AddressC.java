@@ -194,10 +194,10 @@ model.addAttribute("url", paymentUrl);
 				address.setPhone("0934564821");
 				address.setProvincial("HCM");
 		    }
-		    if(entity.getAddress()==null&& entity.getEmail()==null&&entity.getFirstname()==null&& entity.getLastname()==null&&entity.getPhone()==null&& entity.getProvincial()==null) {
-		    	
-		    	return "user/checkout";
-		    }
+//		    if(entity.getAddress()==null&& entity.getEmail()==null&&entity.getFirstname()==null&& entity.getLastname()==null&&entity.getPhone()==null&& entity.getProvincial()==null) {
+//		    	
+//		    	return "user/checkout";
+//		    }
 		
 			address.setAddress(entity.getAddress());
 			address.setEmail(entity.getEmail());
@@ -254,7 +254,6 @@ model.addAttribute("url", paymentUrl);
 	@PostMapping("/shop/checkout")
 	public String save(Model model, @ModelAttribute("addressForm") @Validated AddressModel entity,
 			BindingResult result) {
-		 
 			 user = sessionService.get("userLogin");
 		 address = dao.getAddress(user.getId());
 			if(result.hasErrors()) {
@@ -304,18 +303,14 @@ Date date = new Date();
 					size = sizeDao.getById(i.getIdSize());
 				}
 				Product product = productDao.getById(i.getId());
-				Order order = new Order(String.valueOf(code), false, entity.isPayment(), i.getQuality(), strDate, color,
+				Order order = new Order(String.valueOf(code), false, false, i.getQuality(), strDate, color,
 						size, address, product);
 				orderDao.save(order);
 			}
-			
-			//serviceMail.queue(entity.getEmail(), "Xác nhận đơn hàng!", "Code xác nhận của bạn là: " + code);
 			cart.clear();
 			sessionService.set("countProduct", cart.getCount());
 			return "user/thankyou";
 		}
-	
-
 	@ModelAttribute("total")
 	public int tolal() {
 		List<Item> list = new ArrayList<>(cart.getItems());
@@ -325,11 +320,4 @@ Date date = new Date();
 		}
 		return total ;
 	}
-	
-	
-	
-	
-//	public String content(String s) {
-//		String s = "";
-//	}
 }
