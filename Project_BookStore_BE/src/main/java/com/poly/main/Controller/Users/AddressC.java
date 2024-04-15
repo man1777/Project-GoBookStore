@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.main.Config.ConFigVNPAY;
 import com.poly.main.Dao.AddressDao;
@@ -66,7 +67,7 @@ public class AddressC {
 
 	@Autowired
 	AddressValidator addressValidator;
-
+	int voucher= 0;
 	@Autowired
 	SessionService sessionService;
 	
@@ -92,7 +93,6 @@ public class AddressC {
 	@GetMapping("/shop/checkout")
 	public String index(Model model)throws UnsupportedEncodingException {
 		user = sessionService.get("userLogin");
-		
 		address = dao.getAddress(user.getId());
 		AddressModel entity = new AddressModel();
 		if(address==null) {
@@ -318,6 +318,17 @@ Date date = new Date();
 		for (Item i : list) {
 			total = total + i.getPrice() * i.getQuality();
 		}
+		
 		return total ;
 	}
+	@ModelAttribute("totaltemp")
+	public int tolaltemp() {
+		List<Item> list = new ArrayList<>(cart.getItems());
+		int totaltemp = 0;
+		for (Item i : list) {
+			totaltemp = totaltemp + i.getPrice() * i.getQuality();
+		}
+		return totaltemp ;
+	}
+	
 }

@@ -131,13 +131,17 @@
 													<h6>Tạm tính</h6>
 													<h6>
 														<fmt:formatNumber type="number" pattern="###,###,###"
-															value="${total}" />
+															value="${totaltemp}" />
 														VNĐ
 													</h6>
 												</div>
 												<div class="d-flex justify-content-between mb-3">
 													<h6 class="font-weight-medium">Khuyến mãi</h6>
-													<h6 class="font-weight-medium">0 VNĐ</h6>
+													<h6 class="font-weight-medium">-
+														<fmt:formatNumber type="number" pattern="###,###,###"
+															value="${voucher}" />
+														VNĐ
+													</h6>
 												</div>
 												<div class="d-flex justify-content-between">
 													<h6 class="font-weight-medium">Phí Ship</h6>
@@ -164,12 +168,12 @@
 													class="btn btn-block btn-warning text-white font-weight-bold py-3">Thanh
 													toán khi nhận hàng</button>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
 						</form:form>
+
 						<div class="row" style="margin-top:30px">
 							<div class="col-8"></div>
 							<div class="col-4">

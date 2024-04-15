@@ -146,7 +146,7 @@
 													<div class="modal-footer">
 														<button type="button" class="btn btn-primary"
 															data-dismiss="modal"
-															onclick=" window.location.href = '/index';">OK</button>
+															onclick=" window.location.href = '/shop/cart';">OK</button>
 													</div>
 												</div>
 											</div>

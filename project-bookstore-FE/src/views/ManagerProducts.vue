@@ -1,152 +1,161 @@
 <template>
-    <div>
-        <v-data-table :headers="headers" :items="ProductsList" class="elevation-1"
-            :footer-props="{ 'items-per-page-options': [10, 15, 20, -1] }">
+    <v-card class="rounded-xl ">
+        <v-card-title></v-card-title>
+        <v-card-text>
+            <v-data-table :headers="headers" :items="ProductsList" class="elevation-1 rounded-xl"
+                :footer-props="{ 'items-per-page-options': [10, 15, 20, -1] }">
 
-            <template v-slot:top>
-                <v-toolbar flat>
-                    <v-toolbar-title class=" text-h5 primary--text font-weight-medium">Danh sách sản
-                        phẩm</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-dialog v-model="dialog" max-width="800px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn color="success" fab x-small outlined class="mb-2" @click="openDialog">
-                                <v-icon>mdi-plus</v-icon>
-                            </v-btn>
-                            <v-icon color="success" @click="exportToExcel()">mdi-excel</v-icon>
-                            <v-btn class="me-5" @click="exportToExcel()"><img class="me-3" width="32" height="32"
-                                    src="https://img.icons8.com/color/32/ms-excel.png" alt="ms-excel" />Xuất
-                                Excel</v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="text-h5 primary--text">Thông tin sản phẩm sách</span>
-                                <v-spacer></v-spacer>
-                                <v-btn fab small icon>
-                                    <v-icon @click="closeDialog">mdi-close</v-icon>
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-toolbar-title class=" text-h5 primary--text font-weight-medium">Danh sách sản
+                            phẩm</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-dialog v-model="dialog" max-width="800px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn color="success" fab x-small outlined class="mb-2" @click="openDialog">
+                                    <v-icon>mdi-plus</v-icon>
                                 </v-btn>
-                            </v-card-title>
-                            <v-card-text class="mt-5">
-                                <v-form ref="form" v-model="valid" lazy-validation>
-                                    <v-row>
-                                        <v-col cols="6">
-                                            <v-card style="max-height:500px">
-                                                <label for="file-input">
-                                                    <v-img v-if="Product_Obj.image"
-                                                        :src="'http://localhost:8080/upload/' + Product_Obj.image"
-                                                        max-height="300" max-width="100%"></v-img>
-                                                    <v-img
-                                                        src="https://th.bing.com/th/id/OIP.w8YMeMXz_tZ3LUh06MB5UQHaHa?rs=1&pid=ImgDetMain"
-                                                        v-else-if="imagePreviewUrl === ''"></v-img>
-                                                    <v-img v-if="imagePreviewUrl" :src="imagePreviewUrl" alt="Preview"
-                                                        max-height="300" max-width="100%"></v-img>
-                                                </label>
+                                <v-icon color="success" @click="exportToExcel()">mdi-excel</v-icon>
+                                <v-btn class="me-5" @click="exportToExcel()"><img class="me-3" width="32" height="32"
+                                        src="https://img.icons8.com/color/32/ms-excel.png" alt="ms-excel" />Xuất
+                                    Excel</v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5 primary--text">Thông tin sản phẩm sách</span>
+                                    <v-spacer></v-spacer>
+                                    <v-btn fab small icon>
+                                        <v-icon @click="closeDialog">mdi-close</v-icon>
+                                    </v-btn>
+                                </v-card-title>
+                                <v-card-text class="mt-5">
+                                    <v-form ref="form" v-model="valid" lazy-validation>
+                                        <v-row>
+                                            <v-col cols="6">
+                                                <v-card style="max-height:500px">
+                                                    <label for="file-input">
+                                                        <v-img v-if="Product_Obj.image"
+                                                            :src="'http://localhost:8080/upload/' + Product_Obj.image"
+                                                            max-height="300" max-width="100%"></v-img>
+                                                        <v-img
+                                                            src="https://th.bing.com/th/id/OIP.w8YMeMXz_tZ3LUh06MB5UQHaHa?rs=1&pid=ImgDetMain"
+                                                            v-else-if="imagePreviewUrl === ''"></v-img>
+                                                        <v-img v-if="imagePreviewUrl" :src="imagePreviewUrl"
+                                                            alt="Preview" max-height="300" max-width="100%"></v-img>
+                                                    </label>
 
-                                                <input id="file-input" type="file" style="display: none"
-                                                    accept="image/*" @change="processImage">
-                                            </v-card>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <v-row>
-                                                <v-col cols="12" style="height: 70px;">
-                                                    <v-text-field label="Tên sách" outlined dense
-                                                        v-model="Product_Obj.name" :rules="nameRules" counter="200"
-                                                        lazy-validation="true"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" style="height: 70px;">
-                                                    <v-text-field label="Nhà xuất bản" v-model="Product_Obj.origin"
-                                                        outlined dense lazy-validation="true" :rules="originRules"
-                                                        counter="50"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" style="height: 70px;">
-                                                    <v-text-field label="Ngày xuất bản" v-model="Product_Obj.manuDay"
-                                                        outlined dense :rules="manuDayRules" hint="VD: 17/07/2003"
-                                                        lazy-validation="true"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="6" style="height: 70px;">
-                                                    <v-text-field label="Giá sách" :rules="priceRules"
-                                                        v-model="Product_Obj.price" outlined dense
-                                                        lazy-validation="true"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="6" style="height: 70px;">
-                                                    <v-select label="Loại bìa" :items="['Bìa cứng', 'Bìa mềm', 'Khác']"
-                                                        v-model="Product_Obj.material" outlined dense
-                                                        :rules="[v => !!v || 'Vui lòng chọn loại bìa']"
-                                                        lazy-validation="true"></v-select>
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    <v-checkbox :label="Product_Obj.status ? 'Còn hàng' : 'Hết hàng'"
-                                                        color="success" v-model="Product_Obj.status">
-                                                    </v-checkbox>
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-textarea v-model="Product_Obj.describe" label="Mô tả sách" outlined dense
-                                                hide-details></v-textarea>
-                                        </v-col>
-                                    </v-row>
-                                </v-form>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click="closeDialog">Đóng</v-btn>
+                                                    <input id="file-input" type="file" style="display: none"
+                                                        accept="image/*" @change="processImage">
+                                                </v-card>
+                                            </v-col>
+                                            <v-col cols="6">
+                                                <v-row>
+                                                    <v-col cols="12" style="height: 70px;">
+                                                        <v-text-field label="Tên sách" outlined dense
+                                                            v-model="Product_Obj.name" :rules="nameRules" counter="200"
+                                                            lazy-validation="true"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" style="height: 70px;">
+                                                        <v-text-field label="Nhà xuất bản" v-model="Product_Obj.origin"
+                                                            outlined dense lazy-validation="true" :rules="originRules"
+                                                            counter="50"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" style="height: 70px;">
+                                                        <v-text-field label="Ngày xuất bản"
+                                                            v-model="Product_Obj.manuDay" outlined dense
+                                                            :rules="manuDayRules" hint="VD: 17/07/2003"
+                                                            lazy-validation="true"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="6" style="height: 70px;">
+                                                        <v-text-field label="Giá sách" :rules="priceRules"
+                                                            v-model="Product_Obj.price" outlined dense
+                                                            lazy-validation="true"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="6" style="height: 70px;">
+                                                        <v-select label="Loại bìa"
+                                                            :items="['Bìa cứng', 'Bìa mềm', 'Khác']"
+                                                            v-model="Product_Obj.material" outlined dense
+                                                            :rules="[v => !!v || 'Vui lòng chọn loại bìa']"
+                                                            lazy-validation="true"></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12">
+                                                        <v-checkbox
+                                                            :label="Product_Obj.status ? 'Còn hàng' : 'Hết hàng'"
+                                                            color="success" v-model="Product_Obj.status">
+                                                        </v-checkbox>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <v-textarea v-model="Product_Obj.describe" label="Mô tả sách" outlined
+                                                    dense hide-details></v-textarea>
+                                            </v-col>
+                                        </v-row>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn @click="closeDialog">Đóng</v-btn>
 
 
-                                <v-btn class="ml-2" color="primary" @click="save()">
-                                    Lưu</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                    <v-dialog v-model="dialogConfirmDelete" max-width="600px">
-                        <v-card>
-                            <v-card-title>Bạn có chắc chắn muốn xóa sản phẩm này?</v-card-title>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click="closeDialogDelete">Đóng</v-btn>
-                                <v-btn class="ml-2" color="primary" @click="confirmDelete">
-                                    Xác nhận</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-toolbar>
-            </template>
+                                    <v-btn class="ml-2" color="primary" @click="save()">
+                                        Lưu</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        <v-dialog v-model="dialogConfirmDelete" max-width="600px">
+                            <v-card>
+                                <v-card-title>Bạn có chắc chắn muốn xóa sản phẩm này?</v-card-title>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn @click="closeDialogDelete">Đóng</v-btn>
+                                    <v-btn class="ml-2" color="primary" @click="confirmDelete">
+                                        Xác nhận</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-toolbar>
+                </template>
 
-            <template v-slot:item.status="{ item }">
-                <v-chip class="ma-2" color="green" text-color="white" v-if="item.status === true">
-                    Còn hàng
-                </v-chip>
-                <v-chip v-if="item.status === false" class="ma-2" color="warning" text-color="white">
-                    Hết hàng
-                </v-chip>
-            </template>
+                <template v-slot:item.status="{ item }">
+                    <v-chip class="ma-2" color="green" text-color="white" v-if="item.status === true">
+                        Còn hàng
+                    </v-chip>
+                    <v-chip v-if="item.status === false" class="ma-2" color="warning" text-color="white">
+                        Hết hàng
+                    </v-chip>
+                </template>
 
-            <template v-slot:item.stt="{ item }">
-                <span>{{ ProductsList.indexOf(item) + 1 }}</span>
-            </template>
-            <template v-slot:item.image="{ item }">
-                <v-img :src="'http://localhost:8080/upload/' + item.image" width="100px"></v-img>
-            </template>
-            <template v-slot:item.manuDay="{ item }">
-                <span>{{ formatDate(item.manuDay) }}</span>
-            </template>
+                <template v-slot:item.stt="{ item }">
+                    <span>{{ ProductsList.indexOf(item) + 1 }}</span>
+                </template>
+                <template v-slot:item.image="{ item }">
+                    <v-img :src="'http://localhost:8080/upload/' + item.image" width="100px"></v-img>
+                </template>
+                <template v-slot:item.manuDay="{ item }">
+                    <span>{{ formatDate(item.manuDay) }}</span>
+                </template>
 
-            <template v-slot:item.price="{ item }" class="p-5">
-                <span>{{ (item.price).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }} VNĐ</span>
-            </template>
+                <template v-slot:item.price="{ item }" class="p-5">
+                    <span>{{ (item.price).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }} VNĐ</span>
+                </template>
 
-            <template v-slot:item.actions="{ item }">
-                <div style="display:flex">
-                    <v-icon style="font-size:18px" color="red darken-3" small class="mr-2" @click="delete_emp(item)">
-                        mdi-trash-can-outline
-                    </v-icon>
-                    <v-icon style="font-size:18px" color="green darken-2" small class="mr-2" @click="edit_emp(item)">
-                        mdi-square-edit-outline
-                    </v-icon>
-                </div>
-            </template>
-        </v-data-table>
-    </div>
+                <template v-slot:item.actions="{ item }">
+                    <div style="display:flex">
+                        <v-icon style="font-size:18px" color="red darken-3" small class="mr-2"
+                            @click="delete_emp(item)">
+                            mdi-trash-can-outline
+                        </v-icon>
+                        <v-icon style="font-size:18px" color="green darken-2" small class="mr-2"
+                            @click="edit_emp(item)">
+                            mdi-square-edit-outline
+                        </v-icon>
+                    </div>
+                </template>
+            </v-data-table>
+        </v-card-text>
+
+    </v-card>
 </template>
 
 <script>

@@ -16,10 +16,10 @@
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;"
                                         v-if="DoanhThuToday"><span>{{
                                             DoanhThuToday.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-                                            }}</span> VND</span>
+                                        }}</span> VND</span>
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;" v-else><span>{{
                                         0
-                                    }}</span> VND</span>
+                                            }}</span> VND</span>
                                     <span style="margin-top: 5px; font-size: 20px;">Doanh thu</span>
                                 </div>
                             </v-col>
@@ -236,7 +236,6 @@
                         </lineChart>
                     </v-card-text>
                 </v-card>
-
             </v-col>
         </v-row>
     </div>

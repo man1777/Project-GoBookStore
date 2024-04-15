@@ -23,10 +23,11 @@ public class CartC {
 	
 	@Autowired
 	SessionService sessionService;
-	
+	int voucher = 0;
 	@GetMapping("/shop/cart")
 	public String index(Model model) {
 		model.addAttribute("cart", cart);
+		model.addAttribute("voucher", voucher);
 		return "user/cart";
 	}
 	
@@ -42,15 +43,37 @@ public class CartC {
 		sessionService.set("countProduct", cart.getCount());
 		return "redirect:/shop/cart";
 	}
-	
+	@RequestMapping("/shop/addvoucher")
+	public String voucher(Model model,@RequestParam("magiamgia") String test) {
+		voucher = 20000;
+	model.addAttribute("voucher", voucher);
+	sessionService.set("voucher", voucher);
+		return "redirect:/shop/cart";
+	}
+//	@ModelAttribute("voucher")
+//	public int voucher(){
+//		int voucher = 0;
+//		return voucher;
+//	}
 	@ModelAttribute("total")
-	public int tolal() {
+	public int tolal(Model model) {
 		List<Item> list = new ArrayList<>(cart.getItems());
 		int total = 0;
 		for(Item i: list) {
 			total = total + i.getPrice() * i.getQuality();
 		}
+		model.addAttribute("totaltemp", total);
 		return total;
+	}
+	@ModelAttribute("totaltemp")
+	public int tolaltemp() {
+		List<Item> list = new ArrayList<>(cart.getItems());
+		int totaltemp = 0;
+		for(Item i: list) {
+			totaltemp = totaltemp + i.getPrice() * i.getQuality();
+		}
+		
+		return totaltemp;
 	}
 	
 	
