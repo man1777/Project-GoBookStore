@@ -27,7 +27,7 @@ public class CartC {
 	@GetMapping("/shop/cart")
 	public String index(Model model) {
 		model.addAttribute("cart", cart);
-		model.addAttribute("voucher", voucher);
+		sessionService.set("voucher", voucher);
 		return "user/cart";
 	}
 	
@@ -44,17 +44,16 @@ public class CartC {
 		return "redirect:/shop/cart";
 	}
 	@RequestMapping("/shop/addvoucher")
-	public String voucher(Model model,@RequestParam("magiamgia") String test) {
+	public String voucher(Model model) {
 		voucher = 20000;
-	model.addAttribute("voucher", voucher);
-	sessionService.set("voucher", voucher);
+		sessionService.set("voucher", voucher);
 		return "redirect:/shop/cart";
 	}
-//	@ModelAttribute("voucher")
-//	public int voucher(){
-//		int voucher = 0;
-//		return voucher;
-//	}
+	@ModelAttribute("voucher")
+	public int voucher(){
+		int voucher = sessionService.get("voucher");
+		return voucher;
+	}
 	@ModelAttribute("total")
 	public int tolal(Model model) {
 		List<Item> list = new ArrayList<>(cart.getItems());
@@ -63,7 +62,8 @@ public class CartC {
 			total = total + i.getPrice() * i.getQuality();
 		}
 		model.addAttribute("totaltemp", total);
-		return total;
+		int voucher = sessionService.get("voucher")== null?0:sessionService.get("voucher");
+		return total- voucher;
 	}
 	@ModelAttribute("totaltemp")
 	public int tolaltemp() {
@@ -72,7 +72,6 @@ public class CartC {
 		for(Item i: list) {
 			totaltemp = totaltemp + i.getPrice() * i.getQuality();
 		}
-		
 		return totaltemp;
 	}
 	

@@ -92,6 +92,7 @@ public class AddressC {
    
 	@GetMapping("/shop/checkout")
 	public String index(Model model)throws UnsupportedEncodingException {
+		
 		user = sessionService.get("userLogin");
 		address = dao.getAddress(user.getId());
 		AddressModel entity = new AddressModel();
@@ -308,6 +309,7 @@ Date date = new Date();
 				orderDao.save(order);
 			}
 			cart.clear();
+			sessionService.set("voucher", 0);
 			sessionService.set("countProduct", cart.getCount());
 			return "user/thankyou";
 		}
@@ -318,8 +320,8 @@ Date date = new Date();
 		for (Item i : list) {
 			total = total + i.getPrice() * i.getQuality();
 		}
-		
-		return total ;
+		int voucher = sessionService.get("voucher");
+		return total - voucher ;
 	}
 	@ModelAttribute("totaltemp")
 	public int tolaltemp() {
