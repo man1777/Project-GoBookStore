@@ -146,7 +146,10 @@
 													<div class="modal-footer">
 														<button type="button" class="btn btn-primary"
 															data-dismiss="modal"
-															onclick=" window.location.href = '/shop/cart';">OK</button>
+															onclick=" window.location.href = '/index';">Tiếp tục mua hàng</button>
+														<button type="button" class="btn btn-primary"
+															data-dismiss="modal"
+															onclick=" window.location.href = '/shop/cart';">Đến giỏ hàng</button>
 													</div>
 												</div>
 											</div>

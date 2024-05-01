@@ -43,8 +43,7 @@
         <v-app-bar app height="85" class="elevation-0 appbar" color="#FFFFFF">
 
             <span class="font-weight-medium text-h4 me-15">{{ Title }}</span>
-            <v-text-field class="me-5" prepend-icon="mdi-magnify" label="Tìm kiếm" dense hide-details
-                style="max-width:500px"></v-text-field>
+
             <v-spacer></v-spacer>
             <div>
                 <v-icon color="primary">mdi-account-circle </v-icon>
@@ -97,7 +96,7 @@ export default {
                     action: 'mdi-cart-variant',
                     items: [
                         { title: 'Đơn hàng đang chuẩn bị', url: "/manager/orderswaiting" },
-                        { title: 'Đơn hàng đã giao', url: "/manager/ordersshiped" },
+                        { title: 'Đơn hàng đang giao', url: "/manager/ordersshiped" },
                         { title: 'Đơn hàng hoàn thành', url: "/manager/orderssuccess" },
                         { title: 'Đơn hàng hoàn trả', url: "/manager/ordersback" }
                     ],

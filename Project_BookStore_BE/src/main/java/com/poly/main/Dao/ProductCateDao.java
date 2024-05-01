@@ -16,5 +16,7 @@ public interface ProductCateDao extends JpaRepository<ProductCate, Integer>{
 	List<ShowCategory> getSelectCategory();
 	@Query("SELECT c from  ProductCate c where category.id= :id")
 	List<ProductCate> getProductByCateID(@Param("id") int id);
+	@Query("Delete from ProductCate c where id= :id")
+	void delbyidcate(@Param("id") int id);
 	
 }

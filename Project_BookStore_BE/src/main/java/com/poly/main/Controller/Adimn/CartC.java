@@ -52,7 +52,7 @@ public class CartC {
 	//API để thêm voucher thanh toán trị giá 20000 
 	@RequestMapping("/shop/addvoucher")
 	public String voucher(Model model,@ModelAttribute("magiamgia") String magiamgia) {
-		if(magiamgia.equals("CAMONBAN")) {
+		if(magiamgia.equals("CAMONBAN") && magiamgia!="" ) {
 			voucher = 20000;
 			sessionService.set("voucher", voucher);
 		}else {

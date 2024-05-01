@@ -32,7 +32,7 @@
 							</a>
 						</div>
 						<div class="col-lg-4 col-6 text-left">
-							<form action="">
+							<!-- <form action="">
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="Tìm kiếm">
 									<div class="input-group-append">
@@ -41,7 +41,7 @@
 										</button>
 									</div>
 								</div>
-							</form>
+							</form> -->
 						</div>
 						<div class="col-lg-4 col-6 text-right">
 							<p class="m-0">Dịch Vụ Tư Vấn</p>

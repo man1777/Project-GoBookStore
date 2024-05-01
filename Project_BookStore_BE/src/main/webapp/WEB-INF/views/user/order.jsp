@@ -109,7 +109,8 @@
 																	</td>
 																	<td>${item.status?'Đã giao':'Đang chờ'}</td>
 																	<td><a href="/shop/invoice/${item.name}"
-																			class="btn btn1 ">Hóa đơn</a> <a
+																			class="btn btn1 ${item.status?'':'disabled'}">Hóa
+																			đơn</a> <a
 																			href="/shop/order/delete/${item.name}"
 																			class="btn btn1 ${item.status?'disabled':''}">Hủy</a>
 																	</td>

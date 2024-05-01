@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="Orders_Success" class="elevation-1" search>
+        <v-data-table :headers="headers" :items="Orders_Success" class="elevation-1" search height="612px">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title class="primary--text font-weight-medium text-h5">Đơn hàng đã giao</v-toolbar-title>

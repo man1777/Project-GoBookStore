@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="Orders_Waiting" class="elevation-1" search>
+        <v-data-table :headers="headers" :items="Orders_Waiting" class="elevation-1" search height="612px">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title class="primary--text font-weight-medium text-h5">Đơn hàng đang chờ vận
@@ -64,7 +64,7 @@
                                 </template>
                                 <template v-slot:item.count="{ item }">
                                     <span>{{ (item.price * item.quality).toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,
-            "$1,") }} VNĐ</span>
+                                        "$1,") }} VNĐ</span>
                                 </template>
                             </v-data-table>
                         </v-card-text>

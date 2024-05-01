@@ -1,17 +1,13 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="Orders_Shiped" class="elevation-1" search>
+        <v-data-table :headers="headers" :items="Orders_Shiped" class="elevation-1" search height="612px">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title class="primary--text font-weight-medium text-h5">Đơn hàng đang vận
                         chuyển</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-dialog v-model="dialog" max-width="700px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn color="success" fab x-small outlined class="mb-2" @click="openDialog">
-                                <v-icon>mdi-plus</v-icon>
-                            </v-btn>
-                        </template>
+
                         <v-card>
                             <v-card-title>
                                 <span class="text-h5 primary--text font-weight-medium">Yêu cầu trả hàng</span>
