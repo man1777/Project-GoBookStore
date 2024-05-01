@@ -51,8 +51,9 @@ public class RestAPIProducts {
 			@RequestParam(name="price") int price,
 			@RequestParam(name="origin") String origin,
 			@RequestParam(name="material") String material,
+			@RequestParam(name="author",required=false) String author,
 			@RequestParam(name="manuday") String manuday,
-			@RequestParam(name="describe") String describe,
+			@RequestParam(name="describe",required=false) String describe,
 			@RequestParam(name="review") String review) {
 		String dateStr = manuday;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -66,7 +67,7 @@ public class RestAPIProducts {
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         dateStr = sdf.format(date);
 		Product product = new Product(name, price, param.save(image),
-				origin, material, status, describe, review,dateStr);
+				origin, material, status, describe,author, review,dateStr);
 				return daoo.save(product);
 	}
 	@RequestMapping("/rest/updateProduct")
@@ -77,7 +78,8 @@ public class RestAPIProducts {
 			@RequestParam(name="origin") String origin,
 			@RequestParam(name="material") String material,
 			@RequestParam(name="manuday") String manuday,
-			@RequestParam(name="describe") String describe,
+			@RequestParam(name="describe",required=false) String describe,
+			@RequestParam(name="author",required=false) String author,
 			@RequestParam(name="review") String review,
 			@RequestParam(name="status") boolean status,
 			@RequestParam(name="id") int id) throws Exception {
@@ -99,6 +101,7 @@ public class RestAPIProducts {
 		product.setOrigin(origin);
 		product.setMaterial(material);
 		product.setDescribe(describe);
+		product.setAuthor(author);
 		product.setReview(review);
 		product.setStatus(status);
 		product.setManuDay(dateStr);
@@ -125,6 +128,7 @@ public class RestAPIProducts {
 			@RequestParam(name="material") String material,
 			@RequestParam(name="manuday") String manuday,
 			@RequestParam(name="describe") String describe,
+			@RequestParam(name="author") String author,
 			@RequestParam(name="review") String review) {
 		System.out.println("image "+image.getOriginalFilename());
 		

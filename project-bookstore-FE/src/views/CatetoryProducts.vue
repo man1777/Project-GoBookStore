@@ -26,8 +26,9 @@
                                             <v-card-text>
                                                 <v-row dense>
                                                     <v-col cols="12">
-                                                        <v-autocomplete label="Chọn sách" v-model="idsach"
-                                                            :items="ProductsList" item-text="name" item-value="id">
+                                                        <v-autocomplete label="Chọn sách" v-model="idsach" chips
+                                                            multiple :items="ProductsList" item-text="name"
+                                                            item-value="id">
                                                             <template v-slot:item="{ item }">
                                                                 <v-avatar left>
                                                                     <v-img
@@ -46,7 +47,7 @@
                                             </v-card-text>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <v-btn>Đóng</v-btn>
+                                                <v-btn @click="closeDialog">Đóng</v-btn>
                                                 <v-btn color="primary" @click="findProHasId">Lưu</v-btn>
                                             </v-card-actions>
                                         </v-card>
@@ -96,10 +97,10 @@ export default {
             items: [],
             search: '',
             headers: [
-                { text: "Hình ảnh sản phẩm", value: "image" },
-                { text: "Tên sản phẩm", value: "name" },
+                { text: "Hình ảnh sách", value: "image" },
+                { text: "Tên sản sách", value: "name" },
                 { text: "Thể loại", value: "theloai" },
-                { text: "Hành động", value: "actions" }
+                { text: "Hành động", value: "actions", align: "center" }
             ],
             DS_Product: [],
             data_compare: [],
@@ -110,7 +111,7 @@ export default {
             danhmuc: [],
             ProductsList: [],
             iddanhmuc: null,
-            idsach: null
+            idsach: []
         }
     },
     mounted() {
@@ -143,7 +144,7 @@ export default {
                 alert("Đã có")
             } else {
                 this.API_Ins_Product()
-                alert("Cập nhật thể loại thành công")
+
             }
             this.closeDialog()
         },
@@ -169,14 +170,24 @@ export default {
             })
         },
         API_Ins_Product() {
-            axios.post("http://localhost:8080/manager/addproduct", {
-                cateid: this.iddanhmuc,
-                productid: this.idsach
-            }).then(res => {
-                this.API_get_product()
-            }).catch(err => {
-                console.log(err)
-            })
+            if (this.idsach.length > 0) {
+                this.idsach.forEach(item => {
+                    axios.post("http://localhost:8080/manager/addproduct", {
+                        cateid: this.iddanhmuc,
+                        productid: item
+                    }).then(res => {
+                        this.API_get_product()
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                })
+
+                alert("Cập nhật thể loại thành công")
+            } else {
+                alert("Chọn sách")
+            }
+
+
         },
 
         API_Del_Product(id) {

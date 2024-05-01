@@ -2,7 +2,7 @@
     <v-card class="rounded-xl ">
         <v-card-title></v-card-title>
         <v-card-text>
-            <v-data-table :headers="headers" :items="ProductsList" class="elevation-1 rounded-xl"
+            <v-data-table :headers="headers" :search="search" :items="ProductsList" class="elevation-1 rounded-xl"
                 :footer-props="{ 'items-per-page-options': [10, 15, 20, -1] }">
 
                 <template v-slot:top>
@@ -10,6 +10,8 @@
                         <v-toolbar-title class=" text-h5 primary--text font-weight-medium">Danh sách sản
                             phẩm</v-toolbar-title>
                         <v-spacer></v-spacer>
+                        <v-text-field class="me-5" v-model="search" prepend-icon="mdi-magnify" label="Tìm kiếm" outlined
+                            dense hide-details style="max-width:400px"></v-text-field>
                         <v-dialog v-model="dialog" max-width="800px">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn color="success" fab x-small outlined class="mb-2" @click="openDialog">
@@ -54,6 +56,10 @@
                                                         <v-text-field label="Tên sách" outlined dense
                                                             v-model="Product_Obj.name" :rules="nameRules" counter="200"
                                                             lazy-validation="true"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" style="height: 70px;">
+                                                        <v-text-field label="Tác giả" v-model="Product_Obj.author"
+                                                            outlined dense counter="50"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" style="height: 70px;">
                                                         <v-text-field label="Nhà xuất bản" v-model="Product_Obj.origin"
@@ -173,10 +179,11 @@ export default {
                 { text: "Hình ảnh", value: "image", align: "center" },
                 { text: "Tên sách", value: "name" }, { text: "Nhà xuất bản", value: "origin" },
                 { text: "Giá tiền", value: "price", align: "center", width: "120" },
+                { text: "Tác giả", value: "author", sortable: false, width: "200" },
                 { text: "Ngày xuất bản", value: "manuDay" },
                 { text: "Loại bìa", value: "material", sortable: false, width: "120" },
                 { text: "Tình trạng", value: "status", align: "center" },
-                { text: "Mô tả", value: "describe", sortable: false, width: "200" },
+
                 { text: "Hành động", value: "actions", align: "center", sortable: false }
             ],
             editedIndex: -1,
@@ -189,6 +196,7 @@ export default {
                 origin: "",
                 material: "",
                 describe: "",
+                author: "",
                 status: false,
                 review: "",
                 manuDay: ""
@@ -202,6 +210,7 @@ export default {
                 origin: "",
                 material: "",
                 describe: "",
+                author: "",
                 review: "",
                 manuDay: "",
                 status: false
@@ -224,6 +233,7 @@ export default {
                 v => !!v || "Vui lòng nhập giá bán",
                 v => /^\d+$/.test(v) || "Giá bán không hợp lệ"
             ],
+            search: ""
         }
     },
     watch: {
@@ -310,6 +320,7 @@ export default {
             formData.append('origin', this.Product_Obj.origin)
             formData.append('material', this.Product_Obj.material)
             formData.append('manuday', this.Product_Obj.manuDay)
+            formData.append('author', this.Product_Obj.author)
             formData.append('describe', this.Product_Obj.describe)
             formData.append('review', this.Product_Obj.review)
             formData.append('status', this.Product_Obj.status)
@@ -334,6 +345,7 @@ export default {
             formData.append('image', this.Product_Obj?.image)
             formData.append('origin', this.Product_Obj.origin)
             formData.append('material', this.Product_Obj.material)
+            formData.append('author', this.Product_Obj.author)
             formData.append('manuday', this.Product_Obj.manuDay)
             formData.append('describe', this.Product_Obj.describe)
             formData.append('review', this.Product_Obj.review)

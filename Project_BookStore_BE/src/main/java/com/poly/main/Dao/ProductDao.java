@@ -29,7 +29,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 	@Query(value="select TOP(8) * from Products Where Status = 1 order by ManuDay DESC", nativeQuery = true)
 	List<Product> fillDateDESC();
 	
-	@Query(value="SELECT * FROM Products WHERE Status = 1 AND Id In (SELECT Product_Id From Product_Cate WHERE Manu_Id = ?1) order by ManuDay DESC", nativeQuery = true)
+	@Query(value="SELECT * FROM Products WHERE  Id In (SELECT Product_Id From Product_Cate WHERE Cate_Id = ?1) order by ManuDay DESC", nativeQuery = true)
 	Page<Product> fillShopDESC(int number1 , Pageable pageable);
 	
 	@Query("SELECT p FROM Product p WHERE p.manufacture.id = (SELECT p.manufacture.id FROM Product p WHERE p.id = ?1)")

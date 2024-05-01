@@ -42,7 +42,7 @@
         </v-navigation-drawer>
         <v-app-bar app height="85" class="elevation-0 appbar" color="#FFFFFF">
 
-            <span class="font-weight-medium text-h4 me-15" >{{ Title }}</span>
+            <span class="font-weight-medium text-h4 me-15">{{ Title }}</span>
             <v-text-field class="me-5" prepend-icon="mdi-magnify" label="Tìm kiếm" dense hide-details
                 style="max-width:500px"></v-text-field>
             <v-spacer></v-spacer>
@@ -83,10 +83,10 @@ export default {
                 {
                     action: 'mdi-bookshelf',
                     items: [
-                        { title: 'Danh sách sản phẩm', url: "/manager/products" },
-                        { title: 'Danh mục sản phẩm', url: "/manager/catetoryproduct" },
+                        { title: 'Danh sách sách', url: "/manager/products" },
+                        { title: 'Danh mục thể loại sách', url: "/manager/catetoryproduct" },
                     ],
-                    title: 'Sản phẩm',
+                    title: 'Quản lý sách',
                 },
                 {
                     action: 'mdi-account-group',

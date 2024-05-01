@@ -20,40 +20,56 @@ import com.poly.main.Service.ShoppingCartServiceImpl;
 public class CartC {
 	@Autowired
 	ShoppingCartServiceImpl cart;
-	
 	@Autowired
 	SessionService sessionService;
 	int voucher = 0;
+	
+	//Sang trang giỏ hàng và lấy danh sách các sách đã thêm vào giỏ hàng
 	@GetMapping("/shop/cart")
 	public String index(Model model) {
+		// cart => danh sách các sách đã thêm vào giỏ hàng
 		model.addAttribute("cart", cart);
+		// Tạo biến voucher
 		sessionService.set("voucher", voucher);
 		return "user/cart";
 	}
 	
+	//API để cập nhật số lượng của sách 
 	@RequestMapping("/cart/update/{id}")
 	public String update(@PathVariable("id") Integer id, @RequestParam("quality") Integer qty) {
 		cart.update(id, qty);
 		return "redirect:/shop/cart";
 	}
 	
+	//API để xóa sách khỏi giỏ hàng 
 	@RequestMapping("/cart/remove/{id}")
 	public String remove(@PathVariable("id") Integer id) {
 		cart.remove(id);	
 		sessionService.set("countProduct", cart.getCount());
 		return "redirect:/shop/cart";
 	}
+	
+	//API để thêm voucher thanh toán trị giá 20000 
 	@RequestMapping("/shop/addvoucher")
-	public String voucher(Model model) {
-		voucher = 20000;
-		sessionService.set("voucher", voucher);
+	public String voucher(Model model,@ModelAttribute("magiamgia") String magiamgia) {
+		if(magiamgia.equals("CAMONBAN")) {
+			voucher = 20000;
+			sessionService.set("voucher", voucher);
+		}else {
+			model.addAttribute("thongbao", "Voucher không tồn tại!");
+		}
+		
+		System.out.println(magiamgia);
+		
 		return "redirect:/shop/cart";
 	}
+	//Biến voucher
 	@ModelAttribute("voucher")
 	public int voucher(){
-		int voucher = sessionService.get("voucher");
+		int voucher = sessionService.get("voucher")==null?0:sessionService.get("voucher");
 		return voucher;
 	}
+	//Biến tổng tiền thanh toán
 	@ModelAttribute("total")
 	public int tolal(Model model) {
 		List<Item> list = new ArrayList<>(cart.getItems());
@@ -65,6 +81,7 @@ public class CartC {
 		int voucher = sessionService.get("voucher")== null?0:sessionService.get("voucher");
 		return total- voucher;
 	}
+	//Biến tổng tiền thanh toán tạm tính
 	@ModelAttribute("totaltemp")
 	public int tolaltemp() {
 		List<Item> list = new ArrayList<>(cart.getItems());

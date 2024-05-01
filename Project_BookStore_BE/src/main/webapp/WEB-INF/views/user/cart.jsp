@@ -116,6 +116,7 @@
 										<div class="input-group">
 											<input type="text" name="magiamgia" class="form-control border-0 p-4"
 												placeholder="Mã Giảm Giá">
+											<span>${thongbao}</span>
 											<div class="input-group-append">
 												<button class="btn btn-warning text-white">Áp Dụng</button>
 											</div>

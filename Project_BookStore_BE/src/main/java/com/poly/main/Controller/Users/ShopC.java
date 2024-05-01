@@ -62,6 +62,9 @@ public class ShopC {
 		Pageable pageable = PageRequest.of(p.orElse(0), 9);
 		
 		Page<Product> list = productDao.fillShopDESC(id, pageable);
+		for(Product item:list) {
+			System.out.println(item.getName());
+		}
 		model.addAttribute("shop", list);
 		return "user/shop";
 	}

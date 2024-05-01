@@ -190,17 +190,19 @@
 												<div class="row">
 													<div class="col-md-6">
 														<ul class="list-group list-group-flush">
-															<li class="list-group-item px-0">Chất liệu:
-																${loadInfo.material}</li>
-															<li class="list-group-item px-0"></li>
+															<li class="list-group-item px-0"><strong>Tác giả:</strong>
+																${loadInfo.author}.</li>
+															<li class="list-group-item px-0"><strong>Chất liệu:</strong>
+																${loadInfo.material}.</li>
 														</ul>
 													</div>
 													<div class="col-md-6">
 														<ul class="list-group list-group-flush">
-															<li class="list-group-item px-0">Xuất xứ:
-																${loadInfo.origin}</li>
-															<li class="list-group-item px-0">Tình trạng: Còn hàng</li>
-															<li class="list-group-item px-0"></li>
+															<li class="list-group-item px-0"><strong>Xuất xứ:</strong>
+																${loadInfo.origin}.</li>
+															<li class="list-group-item px-0"><strong>Tình
+																	trạng:</strong> ${loadInfo.status?"Còn sách":"Hết
+																sách"}.</li>
 														</ul>
 													</div>
 												</div>

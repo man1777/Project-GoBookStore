@@ -41,6 +41,7 @@ public class Product implements Serializable {
 	private String material;
 	private boolean status;
 	private String describe;
+	private String author;
 	private String review;
 	private int views = 0;
 	@Column(name="Manuday")
@@ -78,6 +79,14 @@ public class Product implements Serializable {
 		this.manuDay = manuDay;
 	}
 
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
 	public Product(String name, int price, String image, String origin, String material, boolean status,
 			String describe, String review, String manuDay) {
 		super();
@@ -88,6 +97,21 @@ public class Product implements Serializable {
 		this.material = material;
 		this.status = status;
 		this.describe = describe;
+		this.review = review;
+		this.manuDay = manuDay;
+	}
+
+	public Product(String name, int price, String image, String origin, String material, boolean status,
+			String describe, String author, String review, String manuDay) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.image = image;
+		this.origin = origin;
+		this.material = material;
+		this.status = status;
+		this.describe = describe;
+		this.author = author;
 		this.review = review;
 		this.manuDay = manuDay;
 	}

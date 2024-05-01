@@ -16,7 +16,7 @@
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;"
                                         v-if="DoanhThuToday"><span>{{
                                             DoanhThuToday.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-                                        }}</span> VND</span>
+                                            }}</span> VND</span>
                                     <span style="margin-top: 30px; font-size: 24px;font-weight: 600;" v-else><span>{{
                                         0
                                             }}</span> VND</span>
@@ -130,6 +130,33 @@
                     </v-data-table>
                 </div>
             </v-col>
+
+            <v-col cols="6">
+                <v-card>
+                    <v-card-title class="primary--text">Doanh thu từng tháng theo năm <v-spacer></v-spacer>
+                        <v-btn class="mx-3" fab small @click="excel"><img width="35" height="35"
+                                src="https://img.icons8.com/color/35/microsoft-excel-2019--v1.png"
+                                alt="microsoft-excel-2019--v1" /></v-btn>
+                        <v-select :items="yearItem" label="Năm" v-model="Nam" style="max-width:150px" dense hide-details
+                            outlined></v-select>
+                    </v-card-title>
+                    <v-card-text>
+                        <barChartCDN v-if="loaded" ref="chartbarcdn" :options="chartOptions" :data="data" :type="type">
+                        </barChartCDN>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col cols="6">
+                <v-card>
+                    <v-card-title class="primary--text">BIỂU ĐỒ DOANH THU CÁC NĂM <v-spacer></v-spacer>
+                    </v-card-title>
+                    <v-card-text>
+                        <lineChart v-if="loaded" ref="linechart" :data="dataLineChart">
+                        </lineChart>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+
             <v-col cols="3">
                 <div class="card d-flex flex-column align-center ">
                     <div class="icon">
@@ -212,31 +239,7 @@
                     </v-list>
                 </div>
             </v-col>
-            <v-col cols="6">
-                <v-card>
-                    <v-card-title class="primary--text">Doanh thu từng tháng theo năm <v-spacer></v-spacer>
-                        <v-btn class="mx-3" fab small @click="excel"><img width="35" height="35"
-                                src="https://img.icons8.com/color/35/microsoft-excel-2019--v1.png"
-                                alt="microsoft-excel-2019--v1" /></v-btn>
-                        <v-select :items="yearItem" label="Năm" v-model="Nam" style="max-width:150px" dense hide-details
-                            outlined></v-select>
-                    </v-card-title>
-                    <v-card-text>
-                        <barChartCDN v-if="loaded" ref="chartbarcdn" :options="chartOptions" :data="data" :type="type">
-                        </barChartCDN>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="6">
-                <v-card>
-                    <v-card-title class="primary--text">BIỂU ĐỒ DOANH THU CÁC NĂM <v-spacer></v-spacer>
-                    </v-card-title>
-                    <v-card-text>
-                        <lineChart v-if="loaded" ref="linechart" :data="dataLineChart">
-                        </lineChart>
-                    </v-card-text>
-                </v-card>
-            </v-col>
+
         </v-row>
     </div>
 </template>
@@ -460,7 +463,7 @@ export default {
         API_getDoanhThuTheoTungNgay() {
             let date = new Date()
             if (this.dayBegin === "" || this.dayBegin === null) {
-                this.dayBegin = "17/07/2003"
+                this.dayBegin = "20/2/2020"
             }
             if (this.dayEnd === "" || this.dayEnd === null) {
                 this.dayEnd = this.formatDate(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())

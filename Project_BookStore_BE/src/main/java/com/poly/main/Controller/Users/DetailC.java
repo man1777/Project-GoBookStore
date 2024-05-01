@@ -148,6 +148,9 @@ public class DetailC {
 	@ModelAttribute("loadInfo")
 	public Product loadInfo(@PathVariable("id") int id, Model model){
 		Product entity = productDao.getById(id);
+		if(entity.getAuthor()== null||entity.getAuthor()== "") {
+			entity.setAuthor("Chưa cập nhật");
+		}
 		return entity;
 	}
 	

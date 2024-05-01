@@ -177,7 +177,6 @@ public class AddressC {
 	        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
 	       String paymentUrl = ConFigVNPAY.vnp_PayUrl + "?" + queryUrl;
 model.addAttribute("url", paymentUrl);
-	    System.out.println(paymentUrl);
 		model.addAttribute("cart", cart);
 		model.addAttribute("addressForm", entity);
 		return "user/checkout";
